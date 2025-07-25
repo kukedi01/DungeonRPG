@@ -1,8 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonRPG.ConsoleApp", "DungeonRPG.ConsoleApp\DungeonRPG.ConsoleApp.csproj", "{B72A603A-39A4-4C3E-BFCE-3E2F22F55CFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonRPG.Entities", "DungeonRPG.Entities\DungeonRPG.Entities.csproj", "{54011D54-101C-4427-AA04-3941437F1284}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DungeonRPG.Service", "DungeonRPG.Service\DungeonRPG.Service.csproj", "{4449D27D-C3E3-47B7-BE09-9C71EE4D81BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B72A603A-39A4-4C3E-BFCE-3E2F22F55CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B72A603A-39A4-4C3E-BFCE-3E2F22F55CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B72A603A-39A4-4C3E-BFCE-3E2F22F55CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B72A603A-39A4-4C3E-BFCE-3E2F22F55CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54011D54-101C-4427-AA04-3941437F1284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54011D54-101C-4427-AA04-3941437F1284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54011D54-101C-4427-AA04-3941437F1284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54011D54-101C-4427-AA04-3941437F1284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4449D27D-C3E3-47B7-BE09-9C71EE4D81BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4449D27D-C3E3-47B7-BE09-9C71EE4D81BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4449D27D-C3E3-47B7-BE09-9C71EE4D81BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4449D27D-C3E3-47B7-BE09-9C71EE4D81BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
