@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DungeonRPG.Entities\DungeonRPG.Entities.csproj" />
+    </ItemGroup>
+
 </Project>
