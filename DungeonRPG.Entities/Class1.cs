@@ -1,6 +1,6 @@
 ﻿namespace DungeonRPG.Entities;
 
-class Hero //hős
+public class Hero //hős // // public hogy a program.cs elérhesse a classokat 
 {
     public string Name { get; set; }
     public int HP { get; set; }
@@ -18,7 +18,7 @@ class Hero //hős
         }
 }
 
-class Monster 
+public class Monster 
 {
     public string Name { get; set; }
     public int HP { get; set; }

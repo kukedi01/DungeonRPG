@@ -1,5 +1,5 @@
-﻿namespace DungeonRPG.ConsoleApp;
-
+﻿using DungeonRPG.Entities;
+ 
 class Program
 {
     static void Main(string[] args)
