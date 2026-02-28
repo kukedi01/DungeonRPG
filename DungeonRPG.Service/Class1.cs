@@ -1,5 +1,8 @@
 ﻿namespace DungeonRPG.Service;
+using DungeonRPG.Entities;
 
-public class Class1
+
+public class CombatService
 {
+  
 }
