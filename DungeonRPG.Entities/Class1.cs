@@ -7,12 +7,12 @@ public class Hero //hős // // public hogy a program.cs elérhesse a classokat
     public int DMG { get; set; }
     public int DEF { get; set; }
     
-    public bool Alive
+    public bool Alive // bool érték csak 1 és 0 vehet fel 
     {
         get { return HP > 0;  }
     }
     
-    public int Attack() 
+    public int Attack()  
     {
         return DMG;  
     }
