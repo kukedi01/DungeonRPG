@@ -67,3 +67,29 @@ public class Monster
         DEF = def;
        }
 }
+
+public abstract class item 
+{
+    public string Name { get; set; }
+    
+    public item (string name)
+    {
+        Name = name;
+    }
+    public abstract void Use();
+}
+
+public abstract class sword : item
+{
+    public int Damage { get; set; }
+    public sword(string name, int damage) : base(name)
+    {
+        Damage = damage;
+    }
+
+    public void Use(Hero character)
+    {
+        character.DMG += Damage;
+        Console.WriteLine ($"{Hero.Name} Get weapon: {Name}, DMG +{Damage}");
+    }
+}
