@@ -68,28 +68,47 @@ public class Monster
        }
 }
 
-public abstract class item 
+///////////////////////////////////////TÁRGYAK/////////////////////////////////////// 
+
+
+
+public abstract class Item 
 {
     public string Name { get; set; }
     
-    public item (string name)
+    public Item (string name)
     {
         Name = name;
     }
-    public abstract void Use();
+    public abstract void Use(Hero character);
 }
 
-public abstract class sword : item
+public abstract class Sword : Item
 {
     public int Damage { get; set; }
-    public sword(string name, int damage) : base(name)
+    public Sword(string name, int damage) : base(name)
     {
         Damage = damage;
     }
 
-    public void Use(Hero character)
+    public override void Use(Hero character) // ősosztály, gyermekosztály nem teljesen világos 
     {
         character.DMG += Damage;
-        Console.WriteLine ($"{Hero.Name} Get weapon: {Name}, DMG +{Damage}");
+        Console.WriteLine ($"{character.Name} Get weapon: {Name}, DMG +{Damage}"); // static ha mindennek ugyan az az értéke, instance ha midnnek saját értéke van
+    }
+}
+
+public abstract class Potion : Item
+{
+    public int Heal { get; set; }
+    public Potion (string name, int heal) : base(name)
+    {
+        Heal = heal;
+    }
+
+    public override void Use(Hero character) // ősosztály, gyermekosztály nem teljesen világos 
+    {
+        character.HP += Heal;
+        Console.WriteLine ($"{character.Name} Get weapon: {Name}, HP +{Heal}"); // static ha mindennek ugyan az az értéke, instance ha midnnek saját értéke van
     }
 }
