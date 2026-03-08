@@ -33,7 +33,7 @@ namespace DungeonRPG.Service
             Console.WriteLine($"{monster.Name} Attack! Damage: {dmg}, {hero.Name} HP: {hero.HP}");
         }
 
-        private static void HeroTurn(Hero hero, Monster monster)
+        private static void HeroTurn(Hero hero, Monster monster)// lila típus fehér változó
         {
             int dmg = hero.Attack();
             monster.Defend(dmg);
