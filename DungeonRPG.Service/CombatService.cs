@@ -23,7 +23,7 @@ namespace DungeonRPG.Service
             if (hero.Alive)
                 Console.WriteLine($" {hero.Name} Won!");
             else
-                Console.WriteLine($" {monster.Name} Lost!");
+                Console.WriteLine($" {monster.Name} Won!");
         }
 
         private static void MonsterTurn(Hero hero, Monster monster) // static nem statik nem teljesen értem !!!
