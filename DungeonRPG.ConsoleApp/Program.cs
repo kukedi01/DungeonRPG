@@ -6,43 +6,13 @@ namespace DungeonRPG
 {
     class Program
     {
+        private static string connString = "Host=127.0.0.1;Username=postgres;Password=password;Database=adatbazis"; // osztály szintű
+        
         static async Task Main(string[] args) // task= feladat async await így használom asszinkron feladatokhoz adatbázis,api meghívás 
         {
-            var herolist = new List<Hero>() ;
-            var monsters = new List<Monster>();
-            var connString = "Host=127.0.0.1;Username=postgres;Password=password;Database=adatbazis";
-
-            await using var conn = new NpgsqlConnection(connString);
-            await conn.OpenAsync();
+            var herolist = await LoadHeroesAsync() ; //asyncron metódusokat await-el hívom meg (adatbázis lekérdezés,API,fájl olvasás,hálózati művelet)
+            var monsters = await LoadMonsterAsync() ;//asyncron műveletek nem blokkolják a programot hagyják futni
             
-            await using (var cmd = new NpgsqlCommand("SELECT name, HP, DMG, DEF from hero", conn)) // "sql parancsok"
-            await using (var reader = await cmd.ExecuteReaderAsync()) // readasynn 
-            {
-                while (await reader.ReadAsync())
-                {
-                    string name = reader.GetString(0);
-                    int hp = reader.GetInt32(1);
-                    int dmg = reader.GetInt32(2);
-                    int def = reader.GetInt32(3);
-                    Hero hero = new Hero(name, hp, dmg, def);
-                    herolist.Add(hero);
-                }
-            }
-            
-            await using (var cmd = new NpgsqlCommand("SELECT name, HP, DMG, DEF from monster", conn)) // "sql parancsok"
-            await using (var reader = await cmd.ExecuteReaderAsync()) // readasynn 
-            {
-                while (await reader.ReadAsync())
-                {
-                    string name = reader.GetString(0);
-                    int hp = reader.GetInt32(1);
-                    int dmg = reader.GetInt32(2);
-                    int def = reader.GetInt32(3);
-                    Monster monster = new Monster(name, hp, dmg, def);
-                    monsters.Add(monster);
-                }
-            }
-
             int heroindex = Random.Shared.Next(0, herolist.Count);
             
             Hero selectedHero =  herolist[heroindex];
@@ -75,5 +45,62 @@ namespace DungeonRPG
             Console.ReadKey();
         }
 
+        static async Task<List<Hero>> LoadHeroesAsync()
+        {
+            var herolist = new List<Hero>() ;
+            
+            await using var conn = new NpgsqlConnection(connString);
+            await conn.OpenAsync();
+            
+            await using (var cmd = new NpgsqlCommand("SELECT name, HP, DMG, DEF from hero", conn)) // "sql parancsok"
+            await using (var reader = await cmd.ExecuteReaderAsync()) // readasynn 
+            {
+                while (await reader.ReadAsync())
+                {
+                    string name = reader.GetString(0);
+                    int hp = reader.GetInt32(1);
+                    int dmg = reader.GetInt32(2);
+                    int def = reader.GetInt32(3);
+                    Hero hero = new Hero(name, hp, dmg, def);
+                    herolist.Add(hero);
+                }
+            }
+            // ide kell az adatbázist meghivni
+            
+            
+            return herolist;
+        }
+        
+        static async Task<List<Monster>> LoadMonsterAsync()
+        {
+            var monsters = new List<Monster>();
+            
+            await using var conn = new NpgsqlConnection(connString);
+            await conn.OpenAsync();
+            
+            await using (var cmd = new NpgsqlCommand("SELECT name, HP, DMG, DEF from monster", conn)) // "sql parancsok"
+            await using (var reader = await cmd.ExecuteReaderAsync()) // readasynn 
+            {
+                while (await reader.ReadAsync())
+                {
+                    string name = reader.GetString(0);
+                    int hp = reader.GetInt32(1);
+                    int dmg = reader.GetInt32(2);
+                    int def = reader.GetInt32(3);
+                    Monster monster = new Monster(name, hp, dmg, def);
+                    monsters.Add(monster);
+                }
+            }
+            
+            
+            
+            return monsters;
+        }
     }
 }
+//2026.03.15
+// postgree sql átnézni végig őket (update delete)
+//adatbázisba felvenni a potion (különböző mérték) és sword 5 típus (item property name=damege )
+//kódban ne legyen adat (excalibur) adatbázisból betöltve
+//item lista (sword+potion) betöltöm az itemeket, item type vizsgálni ha típus sword azt rakja be(if else), hibás item típus if else 
+// kocka dobás mit kap hero inventory belerakjuk a selected itemet, consolra kiíratni 
