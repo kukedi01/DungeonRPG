@@ -12,21 +12,41 @@ namespace DungeonRPG
         {
             var herolist = await LoadHeroesAsync() ; //asyncron metódusokat await-el hívom meg (adatbázis lekérdezés,API,fájl olvasás,hálózati művelet)
             var monsters = await LoadMonsterAsync() ;//asyncron műveletek nem blokkolják a programot hagyják futni
+            var items = await LoadItemAsync();
+            
             
             int heroindex = Random.Shared.Next(0, herolist.Count);
             
             Hero selectedHero =  herolist[heroindex];
             
-            Potion potion = new Potion(name: "Heal Potion", heal: 5);
-            Sword sword = new Sword(name: "Excalibur", 5);
+            
+            
             Console.WriteLine("Character stat:");
             Console.WriteLine($"Name: {selectedHero.Name}");
             Console.WriteLine($"HP: {selectedHero.HP}");
             Console.WriteLine($"DMG: {selectedHero.DMG}");
             Console.WriteLine($"DEF: {selectedHero.DEF}");
-            selectedHero.Inventory.Add(potion);
-            selectedHero.Inventory.Add(sword);
+           
+            
+            // Itt dobjuk a “kockát” és adunk tárgyat
+            // Dobókocka - pl. 1–8 érték
+            Random rnd = new Random();
+            int dice = rnd.Next(1, 9);
+            Console.WriteLine($"Dobott érték: {dice}");
 
+            if(items.Count > 0)
+            {
+                // A dobott érték alapján választjuk ki a tárgyat
+                int index = (dice - 1) % items.Count; // biztos, hogy nem lép túl a lista méretén
+                Item droppedItem = items[index];
+    
+                selectedHero.Inventory.Add(droppedItem);
+                Console.WriteLine($"A hős kapott egy tárgyat: {droppedItem.Name}");
+            }
+            else
+            {
+                Console.WriteLine("Nincs elérhető tárgy az inventoryhoz.");
+            }
             int monsterindex = Random.Shared.Next(0, monsters.Count);
             
             Monster selectedMonster =  monsters[monsterindex];
@@ -37,6 +57,8 @@ namespace DungeonRPG
             Console.WriteLine($"DMG: {selectedMonster.DMG}");
             Console.WriteLine($"DEF: {selectedMonster.DEF}");
             
+            int itemindex = Random.Shared.Next(0, items.Count);
+            Item selectedItem = items[itemindex];
 
             CombatService combat = new CombatService();
             combat.Fight(selectedHero, selectedMonster);
@@ -92,12 +114,56 @@ namespace DungeonRPG
                 }
             }
             
-            
-            
             return monsters;
         }
+            
+        static async Task<List<Item>> LoadItemAsync()          
+        {
+            var items = new List<Item>();
+    
+            await using var conn = new NpgsqlConnection(connString);
+            await conn.OpenAsync();
+    
+            await using var cmd = new NpgsqlCommand(
+                "SELECT item.name, item.type, item_property.name, item_property.value " +
+                "FROM item " +
+                "JOIN item_property ON item.id = item_property.itemid", conn);
+    
+            await using var reader = await cmd.ExecuteReaderAsync();
+            {
+                while (await reader.ReadAsync())
+                {
+                    string name = reader.GetString(0);
+                    string type = reader.GetString(1);
+                    string property = reader.GetString(2);
+                    int value = int.Parse(reader.GetString(3)); 
+
+                    Item item;
+
+                    // Potion létrehozása heal property alapján
+                    if (type == "potion" && property == "heal")
+                    {
+                        item = new Potion(name, value);
+                    }
+                    // Sword létrehozása damage property alapján
+                    else if (type == "sword" && property == "damage")
+                    {
+                        item = new Sword(name, value);
+                    }
+                    else
+                    {
+                        continue; // minden más property-t kihagy
+                    }
+
+                    items.Add(item);
+                }
+            }
+
+            return items;
+        }
     }
-}
+    }
+
 //2026.03.15
 // postgree sql átnézni végig őket (update delete)
 //adatbázisba felvenni a potion (különböző mérték) és sword 5 típus (item property name=damege )

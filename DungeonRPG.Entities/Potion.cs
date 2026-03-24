@@ -3,7 +3,7 @@ namespace DungeonRPG.Entities;
 public  class Potion : Item
 {
     public int Heal { get; set; }
-    public Potion (string name, int heal) : base(name)
+    public Potion (string name, int heal) : base(name,"potion")
     {
         Heal = heal;
     }

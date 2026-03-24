@@ -4,7 +4,7 @@ public class Sword : Item
 {
     public int Damage { get; set; }
 
-    public Sword(string name, int damage) : base(name)
+    public Sword(string name, int damage) : base(name,"sword")
     {
         Damage = damage;
     }
