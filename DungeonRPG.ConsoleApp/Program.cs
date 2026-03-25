@@ -11,8 +11,9 @@ namespace DungeonRPG
         static async Task Main(string[] args) // task= feladat async await így használom asszinkron feladatokhoz adatbázis,api meghívás 
         {
             var herolist = await LoadHeroesAsync() ; //asyncron metódusokat await-el hívom meg (adatbázis lekérdezés,API,fájl olvasás,hálózati művelet)
-            var monsters = await LoadMonsterAsync() ;//asyncron műveletek nem blokkolják a programot hagyják futni
+            var monsters = await LoadMonsterAsync() ; //asyncron műveletek nem blokkolják a programot hagyják futni
             var items = await LoadItemAsync();
+            
             
             
             int heroindex = Random.Shared.Next(0, herolist.Count);
@@ -31,7 +32,7 @@ namespace DungeonRPG
             // Itt dobjuk a “kockát” és adunk tárgyat
             // Dobókocka - pl. 1–8 érték
             Random rnd = new Random();
-            int dice = rnd.Next(1, 9);
+            int dice = rnd.Next(1, 10);
             Console.WriteLine($"Dobott érték: {dice}");
 
             if(items.Count > 0)
@@ -42,6 +43,14 @@ namespace DungeonRPG
     
                 selectedHero.Inventory.Add(droppedItem);
                 Console.WriteLine($"A hős kapott egy tárgyat: {droppedItem.Name}");
+                
+                Console.WriteLine("\nInventory:");
+
+                foreach (var item in selectedHero.Inventory)
+                {
+                    Console.WriteLine(item.Name);
+                }
+                
             }
             else
             {
@@ -57,8 +66,6 @@ namespace DungeonRPG
             Console.WriteLine($"DMG: {selectedMonster.DMG}");
             Console.WriteLine($"DEF: {selectedMonster.DEF}");
             
-            int itemindex = Random.Shared.Next(0, items.Count);
-            Item selectedItem = items[itemindex];
 
             CombatService combat = new CombatService();
             combat.Fight(selectedHero, selectedMonster);

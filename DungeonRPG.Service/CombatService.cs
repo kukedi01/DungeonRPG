@@ -35,7 +35,32 @@ namespace DungeonRPG.Service
 
         private static void HeroTurn(Hero hero, Monster monster)// lila típus fehér változó
         {
+            Potion usedPotion = null;
+
+            foreach (var item in hero.Inventory)
+            {
+                if (item is Potion potion)
+                {
+                    hero.HP += potion.Heal;
+                    Console.WriteLine($"{hero.Name} used {potion.Name} and healed {potion.Heal} HP");
+                    usedPotion = potion;
+                    break;
+                }
+            }
+
+            if (usedPotion != null)
+                hero.Inventory.Remove(usedPotion);
+
+            
             int dmg = hero.Attack();
+            foreach (var item in hero.Inventory)
+            {
+                if (item is Sword sword)
+                {  
+                    dmg +=  sword.Damage;
+                    Console.WriteLine($"{hero.Name} uses {sword.Name}! Bonus damage: {sword.Damage}");
+                }
+            }
             monster.Defend(dmg);
             Console.WriteLine($"{hero.Name} Fight back! Damage: {dmg}, {monster.Name} HP: {monster.HP}");
         }
