@@ -9,6 +9,8 @@ public class Hero //hős // // public hogy a program.cs elérhesse a classokat
     public int DMG { get; set; }
     public int DEF { get; set; }
     
+    public Sword? EquippedSword { get; set; }
+    
     public List<Item> Inventory { get; set; }
     
     public bool Alive // bool érték csak 1 és 0 vehet fel 
@@ -58,4 +60,30 @@ public class Hero //hős // // public hogy a program.cs elérhesse a classokat
         DEF = def;
         Inventory = new List<Item>();
         }
+    
+    public void EquipSword(Sword sword)
+    {
+        if (!Inventory.Contains(sword))
+        {
+            Inventory.Add(sword);
+        }
+
+        if (EquippedSword == null)
+        {
+            EquippedSword = sword;
+            Console.WriteLine($"{Name} equipped {sword.Name}");
+        }
+        else if (sword.Damage > EquippedSword.Damage)
+        {
+            Console.WriteLine(
+                $"{Name} replaced {EquippedSword.Name} with {sword.Name}");
+
+            EquippedSword = sword;
+        }
+        else
+        {
+            Console.WriteLine(
+                $"{sword.Name} is weaker than {EquippedSword.Name}, so it stays in the inventory.");
+        }
+    }
 }

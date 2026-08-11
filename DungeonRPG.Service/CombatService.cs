@@ -5,7 +5,7 @@ namespace DungeonRPG.Service
 {
     public class CombatService
     {
-        public void Fight(Hero hero, Monster monster)
+        public void Fight(Hero hero, Monster monster, List<Item> items)
         {
             Console.WriteLine($"The fight begins : {hero.Name} vs {monster.Name}\n");
 
@@ -21,7 +21,12 @@ namespace DungeonRPG.Service
             }
 
             if (hero.Alive)
+            {    
                 Console.WriteLine($" {hero.Name} Won!");
+            
+                DropItem(hero, items);
+            
+            }
             else
                 Console.WriteLine($" {monster.Name} Won!");
         }
@@ -53,16 +58,40 @@ namespace DungeonRPG.Service
 
             
             int dmg = hero.Attack();
-            foreach (var item in hero.Inventory)
+            if (hero.EquippedSword != null)
             {
-                if (item is Sword sword)
-                {  
-                    dmg +=  sword.Damage;
-                    Console.WriteLine($"{hero.Name} uses {sword.Name}! Bonus damage: {sword.Damage}");
-                }
+                dmg += hero.EquippedSword.Damage;
+
+                Console.WriteLine(
+                    $"{hero.Name} uses {hero.EquippedSword.Name}! Bonus damage: {hero.EquippedSword.Damage}");
             }
+            
             monster.Defend(dmg);
             Console.WriteLine($"{hero.Name} Fight back! Damage: {dmg}, {monster.Name} HP: {monster.HP}");
         }
+        
+        private static void DropItem(Hero hero, List<Item> items)
+        {
+            if (items.Count == 0)
+            {
+                Console.WriteLine("No items available.");
+                return;
+            }
+
+            int index = Random.Shared.Next(0, items.Count);
+            Item droppedItem = items[index];
+
+            hero.Inventory.Add(droppedItem);
+
+            Console.WriteLine($"{droppedItem.Name} dropped!");
+            
+            if (droppedItem is Sword sword)
+            {
+                hero.EquipSword(sword);
+            }
+            
+        }
     }
+    
+    
 }

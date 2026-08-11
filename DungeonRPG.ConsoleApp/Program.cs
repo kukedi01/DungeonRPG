@@ -44,6 +44,11 @@ namespace DungeonRPG
                 selectedHero.Inventory.Add(droppedItem);
                 Console.WriteLine($"A hős kapott egy tárgyat: {droppedItem.Name}");
                 
+                if (droppedItem is Sword sword)
+                {
+                    selectedHero.EquipSword(sword);
+                }
+                
                 Console.WriteLine("\nInventory:");
 
                 foreach (var item in selectedHero.Inventory)
@@ -68,7 +73,7 @@ namespace DungeonRPG
             
 
             CombatService combat = new CombatService();
-            combat.Fight(selectedHero, selectedMonster);
+            combat.Fight(selectedHero, selectedMonster, items);
 
 
             Console.ReadKey();
